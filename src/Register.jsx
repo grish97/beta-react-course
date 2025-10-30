@@ -12,16 +12,17 @@
 
 import { useState } from "react";
 import './Register.css';
+import { JobExperience } from "./forms/JobExperience";
 
-export const Register = () => {
+export const Register = (props) => {
     const [form, setForm] = useState({
         firstName: '',
         lastName: '',
-        age: null,
-        gender: null,
+        age: '',
+        gender: '',
         phoneNumber: '',
-        experience: null,
-        primaryFocus: null,
+        experience: '',
+        primaryFocus: '',
         certificate: '',
         password: '',
         confirmPassword: '',
@@ -32,6 +33,16 @@ export const Register = () => {
             ...form,
             [name]: value
         })
+    };
+
+    const handleRegister = () => {
+        // ......
+
+        const isValidForm = false;
+
+        if (isValidForm) {
+            props.onRegistred();
+        }
     };
 
     const ageOptions = Array.from({ length: 80 }, (_, i) => 18 + i);
@@ -64,8 +75,9 @@ export const Register = () => {
 
                 {/** Age */}
                 <div className="form-field">
-                    <label htmlFor="age">Last Name </label>
-                    <select name="age" id="age">
+                    <label htmlFor="age">Age </label>
+                    <select name="age" id="age" value={form.age}>
+                        <option value=''>Select your age</option>
                         {ageOptions.map((age, index) => (
                             <option value={age} key={index}>{age}</option>
                         ))}
@@ -76,7 +88,7 @@ export const Register = () => {
                 <div className="form-field">
                     <label htmlFor="gender">Gender </label>
                     <select name="gender" id="gender">
-                        <option value="male">Male</option>
+                        <option value={form.gender}>{form.gender}</option>
                         <option value="female">Female</option>
                     </select>
                 </div>
@@ -86,43 +98,21 @@ export const Register = () => {
                     <label htmlFor="phoneNumber">Phone Number </label>
                     <input
                         name='phoneNumber'
-                        type="text"
+                        type="number"
                         value={form.phoneNumber}
                         onChange={(e) => onInputChange('phoneNumber', e.target.value)}
                     />
                 </div>
 
-                {/** Experience */}
-                <div className="form-field">
-                    <label htmlFor="experience">Experience </label>
-                    <input
-                        name='experience'
-                        type="number"
-                        value={form.experience}
-                        onChange={(e) => onInputChange('experience', e.target.value)}
-                    />
-                </div>
-
-                {/** Primary Focus */}
-                <div className="form-field">
-                    <label htmlFor="primaryFocus">Primary Focus </label>
-                    <select name="primaryFocus" id="primaryFocus">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="both">Both</option>
-                    </select>
-                </div>
-
-                {/** Certificate */}
-                <div className="form-field">
-                    <label htmlFor="certificate">Certificate </label>
-                    <input
-                        name='certificate'
-                        type="text"
-                        value={form.certificate}
-                        onChange={(e) => onInputChange('certificate', e.target.value)}
-                    />
-                </div>
+                {/** Job Experience */}
+                <JobExperience
+                    jobExperience={{
+                        certificate: form.certificate,
+                        primaryFocus: form.primaryFocus,
+                        experience: form.experience
+                    }}
+                    onInputChange={onInputChange}
+                 />
 
                 {/** Password */}
                 <div className="form-field">
@@ -133,6 +123,7 @@ export const Register = () => {
                         value={form.password}
                         onChange={(e) => onInputChange('password', e.target.value)}
                     />
+
                 </div>
 
                 {/** Comfirm Passord */}
@@ -147,7 +138,7 @@ export const Register = () => {
                 </div>
 
                 <div className="action">
-                    <button>Register</button>
+                    <button onClick={handleRegister}>Register</button>
                 </div>
             </div>
         </div>
